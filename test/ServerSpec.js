@@ -38,9 +38,10 @@ describe('', function() {
     /*************************************************************************************/
     /* TODO: Update user and password if different than on your local machine            */
     /*************************************************************************************/
+    //RB: using my DB, change if using local DB on your repo
     db = mysql.createConnection({
-      user: 'student',
-      password: 'student',
+      user: 'root',
+      password: '',
       database: 'shortly'
     });
 

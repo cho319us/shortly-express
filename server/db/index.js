@@ -3,9 +3,10 @@ const createTables = require('./config');
 const Promise = require('bluebird');
 const database = 'shortly';
 
+//RB: using my DB, change if on local repo
 const connection = mysql.createConnection({
-  user: 'student',
-  password: 'student'
+  user: 'root',
+  password: ''
 });
 
 const db = Promise.promisifyAll(connection, { multiArgs: true });

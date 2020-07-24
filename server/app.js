@@ -17,17 +17,17 @@ app.use(express.static(path.join(__dirname, '../public')));
 
 
 
-app.get('/', 
+app.get('/',
 (req, res) => {
   res.render('index');
 });
 
-app.get('/create', 
+app.get('/create',
 (req, res) => {
   res.render('index');
 });
 
-app.get('/links', 
+app.get('/links',
 (req, res, next) => {
   models.Links.getAll()
     .then(links => {
@@ -38,7 +38,7 @@ app.get('/links',
     });
 });
 
-app.post('/links', 
+app.post('/links',
 (req, res, next) => {
   var url = req.body.url;
   if (!models.Links.isValidUrl(url)) {
@@ -78,7 +78,23 @@ app.post('/links',
 // Write your authentication routes here
 /************************************************************/
 
+//add handling for a POST request on "/login" (logging into the server)
+//site defines username and password as the keys
+app.post('/login',
+  (req, res, next) => {
+    console.log(req.body);
 
+  });
+
+//add handling for a POST request on "/signup" (creating a new account)
+app.post('/signup',
+  (req, res, next) => {
+    let username = req.body.username;
+    let password = req.body.password;
+    //check user database to see if username already exists, return error if true
+    //generate hash info using create() in user.js, which should add record to database
+
+  });
 
 /************************************************************/
 // Handle the code parameter route last - if all other routes fail
