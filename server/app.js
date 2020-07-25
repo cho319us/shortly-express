@@ -78,22 +78,60 @@ app.post('/links',
 // Write your authentication routes here
 /************************************************************/
 
+// add handling for a GET request on "/login" (get the log in page)
+app.get('/login',
+  (req, res, next) => {
+    res.render('login');
+  }
+);
+
 //add handling for a POST request on "/login" (logging into the server)
 //site defines username and password as the keys
 app.post('/login',
   (req, res, next) => {
-    console.log(req.body);
+    let username = req.body.username;
+    let password = req.body.password;
+    // check user database to see if username already exists
+    models.Users.get({username})
+    .then(user => {
+      // if user does not exist or the password is not match, then redirect to login
+      if (!user || !models.Users.compare(password, user.password, user.salt)) {
+        throw user;
+      // if user exist, then redirect to index page
+      } else {
+        res.redirect('/');
+      }
+    })
+    .catch(user => {
+      res.redirect('/login');
+    });
 
-  });
+  }
+);
+
+// add handling for a GET request on "/signup" (get the sign up page)
+app.get('/signup',
+  (req, res, next) => {
+    res.render('signup');
+  }
+);
 
 //add handling for a POST request on "/signup" (creating a new account)
 app.post('/signup',
   (req, res, next) => {
     let username = req.body.username;
     let password = req.body.password;
-    //check user database to see if username already exists, return error if true
+    // check user database to see if username already exists
+    models.Users.create({username, password})
+      .then(user => {
+        // if user didn't exist and insert is successful, redirect to index page
+        res.redirect('/');
+      })
+      //if user already exists, redirect to signup page
+      .catch(user => {
+        res.redirect('/signup');
+      });
     //generate hash info using create() in user.js, which should add record to database
-
   });
 
 /************************************************************/
